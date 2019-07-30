@@ -1,21 +1,26 @@
 package com.example.homework.application.controller;
 
-import com.example.homework.application.service.AuthorService;
-import com.example.homework.application.service.BookService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import com.example.homework.application.entity.Book;
+import com.example.homework.application.service.AuthorService;
+import com.example.homework.application.service.BookService;
 
 public class ControllerTest {
-
-    private static final int STATUS_OK = 200;
-    private static final int STATUS_NOT_FOUND = 404;
 
     private static final String BOOK_ID = "book_id";
     private static final String CATEGORY = "category";
@@ -46,27 +51,25 @@ public class ControllerTest {
     @Test
     public void shouldGetBook() {
         //given
-        //TODO
-//        Optional<Book> expected = new Optional<>(new Book());
-//        when(bookService.getBook(eq(BOOK_ID))).thenReturn(expected);
+		Optional<Book> expected = Optional.of(new Book());
+		when(bookService.getBook(eq(BOOK_ID))).thenReturn(expected);
         //when
         ResponseEntity actual = tested.getBook(BOOK_ID);
         //then
         verify(bookService, times(1)).getBook(BOOK_ID);
-//        assertEquals(actual.getStatusCode(), STATUS_OK);
+		assertEquals(actual.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void shouldGetBookNotFound() {
         //given
-        //TODO
-//        Optional<Book> expected = new Optional<>();
-//        when(bookService.getBook(eq(BOOK_ID))).thenReturn(expected);
+		Optional<Book> expected = Optional.empty();
+		when(bookService.getBook(eq(BOOK_ID))).thenReturn(expected);
         //when
         ResponseEntity actual = tested.getBook(BOOK_ID);
         //then
         verify(bookService, times(1)).getBook(BOOK_ID);
-//        assertEquals(actual.getStatusCode(), STATUS_NOT_FOUND);
+		assertEquals(actual.getStatusCode(), HttpStatus.NOT_FOUND);
 
     }
 

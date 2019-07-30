@@ -1,20 +1,22 @@
 package com.example.homework.application.controller;
 
-import com.example.homework.application.entity.Author;
-import com.example.homework.application.entity.Book;
-import com.example.homework.application.service.AuthorService;
-import com.example.homework.application.service.BookService;
+import static com.example.homework.application.controller.Controller.BASE_PATH;
+
+import java.util.Collection;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import static com.example.homework.application.controller.Controller.BASE_PATH;
+import com.example.homework.application.entity.Author;
+import com.example.homework.application.entity.Book;
+import com.example.homework.application.service.AuthorService;
+import com.example.homework.application.service.BookService;
 
 @RestController
 @RequestMapping(BASE_PATH)
@@ -24,7 +26,7 @@ public class Controller {
     static final String ALL_BOOKS = "/books";
     static final String BOOK = "/book/{id}";
     static final String CATEGORY = "/category/{categoryName}";
-    static final String SEARCH = "/search?q={phrase}";
+	static final String SEARCH = "/search";
     static final String RATING = "/rating";
 
     @Autowired
@@ -53,7 +55,7 @@ public class Controller {
     }
 
     @RequestMapping(value = SEARCH, method = RequestMethod.GET)
-    public Collection<Book> getQuery(@PathVariable("phrase") String phrase) {
+	public Collection<Book> getQuery(@RequestParam("q") String phrase) {
         return bookService.getQuery(phrase);
     }
 
